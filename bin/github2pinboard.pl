@@ -38,6 +38,7 @@ die("Got nothing from the API request ($cmd)\n") unless $json =~ /\S/;
 
 my $perl = parse_json($json);
 
+my $counter = 1;
 foreach my $star (@$perl) {
   my %post = %{ $api->add( 
     url => $star->{'html_url'},
@@ -47,6 +48,7 @@ foreach my $star (@$perl) {
     replace => 'no'
     ) 
   };
+  printf("%03d/%03d ", $counter++, $perpage);
   if ($post{'result_code'} eq "done") { print "[ADDED]  " }
   elsif ($post{'result_code'} eq "item already exists") { print "[EXISTS] " }
   print $star->{'full_name'} . "\n";
